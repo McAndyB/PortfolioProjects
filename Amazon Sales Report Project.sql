@@ -99,10 +99,10 @@ Order by Total_Sales desc
 Limit 10
 
 -- 	  SKU		   Total Sales
---"J0230-SKD-M"	    423453.00
---"J0230-SKD-S"	    375556.00
+--"J0230-SKD-M"	        423453.00
+--"J0230-SKD-S"	        375556.00
 --"SET268-KR-NP-XL"	256216.00
---"J0230-SKD-L"	    239106.00
+--"J0230-SKD-L"	        239106.00
 --"SET268-KR-NP-S"	238542.00
 --"SET268-KR-NP-L"	236494.00
 --"J0230-SKD-XL"	217008.00
@@ -127,16 +127,16 @@ From t1
 
 Drop table if exists temp_table;
 Create temp table temp_table (
-							   order_date date,amount float,day_num int,month_num int,month_name varchar			
-								)
+				 order_date date,amount float,day_num int,month_num int,month_name varchar			
+			     )
 			Insert into temp_table
-								(
-								select order_date,amount,
-									   extract(dow from order_date)   as Day_num,
-									   extract(month from order_date) as month_num,
-									   to_char(order_date,'Month')    as Month_name
-								From SalesRep
-								)
+						(
+						  select order_date,amount,
+						         extract(dow from order_date)   as Day_num,
+						         extract(month from order_date) as month_num,
+						         to_char(order_date,'Month')    as Month_name
+						  From SalesRep
+						)
 			select * from temp_table
 		with t1 as (
 					Select month_num,month_name,avg(amount) as weekend_sales
@@ -145,8 +145,8 @@ Create temp table temp_table (
 					group by month_num,month_name
 		   		   ),
  			 t2 as (
-				    Select month_num,month_name,avg(amount) as weekday_sales
-	                From temp_table
+				        Select month_num,month_name,avg(amount) as weekday_sales
+	                                From temp_table
 					Where day_num <> 0 or day_num <> 6
 					group by month_num,month_name
 		  			)
@@ -159,10 +159,10 @@ Create temp table temp_table (
 		order by month_num
 --Insights--	
 --        	Montht Name     Weekends Avgerage Sales 	Weekdays Average Sales
---			   March					0					   627.68
---		   	   April				  630.04				   626.00
---			    May	 				  664.76				   663.36
---			   June  				  661.40	               661.48
+--	          March			 0				 627.68
+--	          April		      630.04				 626.00
+--	           May	 	      664.76				 663.36
+--	          June  	      661.40	                         661.48
 
 --------------------------------------------Customer Analysis--------------------------------------------
 
@@ -184,15 +184,15 @@ Order by Total_Sales desc
 
 --Insights--
 -- The top Cities for sales are BENGALURU     with 4,723,666.00 total sales followed by
--- 							    HYDERABAD     with 3,253,248.00  total sales
---								MUMBAI        with 2,437,985.00  total sales
--- 								NEW DELHI     with 2,347,957.00  total sales and
--- 							    CHENNAI       with 2,074,972.00  total sales
+-- 			        HYDERABAD     with 3,253,248.00  total sales
+--				MUMBAI        with 2,437,985.00  total sales
+-- 				NEW DELHI     with 2,347,957.00  total sales and
+-- 			        CHENNAI       with 2,074,972.00  total sales
 --The top States for sales are  MAHARASHTRA   with 8,743,630.00 total sales followed by
---							    KARNATAKA     with 7,094,688.00  total sales
---								TELANGANA     with 4,506,844.000  total sales
---								TAMIL NADU    with 4,293,145.00 total sales and 
---								UTTAR PRADESH with 4,239,078.00 total sales
+--			        KARNATAKA     with 7,094,688.00  total sales
+--				TELANGANA     with 4,506,844.000  total sales
+--				TAMIL NADU    with 4,293,145.00 total sales and 
+--				UTTAR PRADESH with 4,239,078.00 total sales
 
 --2.Are there any trends in order cancellations and RTS?
 
@@ -313,14 +313,14 @@ cross join t3
 --2.How effective are the promotions?
 
 with t1 as (
-Select count(distinct Order_id) as with_promo
-From salesrep
-Where promotion_id is not null
+           Select count(distinct Order_id) as with_promo
+           From salesrep
+           Where promotion_id is not null
             ),
-	 t2 as (		
-Select count(distinct Order_id) as without_promo
-From salesrep
-Where promotion_id is null
+     t2 as (		
+            Select count(distinct Order_id) as without_promo
+            From salesrep
+            Where promotion_id is null
             )
 select t1.with_promo,concat(round(t1.with_promo*100.00/(select count(distinct order_id)from salesrep),2),'%') as with_promoPercentage,
        t2.without_promo,concat(round(t2.without_promo*100.00/(select count(distinct order_id)from salesrep),2),'%') as without_promoPercentage
@@ -366,14 +366,14 @@ limit 10
 --  City        April    May    June            --The data shows that our top performing Cities are all declining 
 --"BENGALURU"	3,818	3,353	3,271           --There is no emerging markets right now 
 --"HYDERABAD"	2,536	2,490	2,377
---"MUMBAI"	    2,160	1,884	1,606
+--"MUMBAI"	2,160	1,884	1,606
 --"NEW DELHI"	2,111	1,749	1,568
---"CHENNAI"	    1,724	1,634	1,559
---"PUNE"	    1,303	1,208	1,077
+--"CHENNAI"	1,724	1,634	1,559
+--"PUNE"        1,303	1,208	1,077
 --"KOLKATA"   	  973     692	  576
 --"GURUGRAM"	  660     602	  508
---"THANE"	      640	  551	  419
---"LUCKNOW"	      545	  448	  397
+--"THANE"	  640	  551	  419
+--"LUCKNOW"	  545	  448	  397
 
 --------------------------------------------Return and Cancellation Analysis--------------------------------------------
 
@@ -437,8 +437,8 @@ Where t1.orders >=100
 order by Return_rate desc,orders desc
 
 --Results--
---   SKU            Orders  Returns    Retun Rate    --These are the Top 5 Product SKUs that have
---"J0003-SET-M"	    284	     19        	6.69           the highest return rate 
+--   SKU            Orders         Returns    Retun Rate     --These are the Top 5 Product SKUs that have
+--"J0003-SET-M"	        284	     19        	6.69           the highest return rate 
 --"J0003-SET-XXL"	215	     13	        6.05           Note: These are only products that have more than a hundred orders
 --"JNE3801-KR-XL"	117	      7	        5.98
 --"J0003-SET-XL"	171	      9	        5.26
@@ -454,7 +454,7 @@ with t1 as (
             select count(distinct order_id) as Returns,category
             from salesrep
             where status = 'Shipped - Rejected by Buyer'  or
-            status = 'Shipped - Returned to Seller' or
+            status = 'Shipped - Returned to Seller'       or
             status = 'Shipped - Returning to Seller'
             group by category
             order by returns desc
